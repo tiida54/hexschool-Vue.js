@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="/stylesheets/all.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/regular.js" integrity="sha384-t7yHmUlwFrLxHXNLstawVRBMeSLcXTbQ5hsd0ifzwGtN7ZF7RZ8ppM7Ldinuoiif" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>    <script src="/javascripts/vendor.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>    
+    <script src="/javascripts/vendor.js"></script>
 
   </head>
   
@@ -146,13 +147,30 @@
 
 <div id="app">
   <div>
-    你已經點擊 <button class="btn btn-outline-secondary btn-sm" @click="counter += 1">{{ counter }}</button> 下。
+    你已經點擊 <button class="btn btn-outline-secondary btn-sm" @click="counter += 1">{{ counter }}</button> 下 -app。
   </div>
+  <div>
+      你已經點擊 <button class="btn btn-outline-secondary btn-sm" @click="counter += 1">{{ counter }}</button> 下 -app。
+    </div>
+  <counter-component></counter-component>
+  <counter-component></counter-component>
+
 </div>
 
 <script>
 // 請在此撰寫 JavaScript
-
+Vue.component('counter-component', {
+  data: function () {
+    return {
+      counter: 0
+    }
+  },
+  template: `
+    <div>
+      你已經點擊 <button class="btn btn-outline-secondary btn-sm" @click="counter += 1">{{ counter }}</button> 下 -component。
+    </div>
+  `
+})
 
 var app = new Vue({
   el: '#app',
@@ -162,23 +180,6 @@ var app = new Vue({
 });
 </script>
 
-<!-- 解答：
-<counter-component></counter-component>
-
-JavaScript
-Vue.component('counter-component', {
-  data: function () {
-    return {
-      counter: 0
-    }
-  },
-  template: `
-    <div>
-      你已經點擊 <button class="btn btn-outline-secondary btn-sm" @click="counter += 1">{{ counter }}</button> 下。
-    </div>
-  `
-})
---> 
         </div>
       </div>
     </div>
