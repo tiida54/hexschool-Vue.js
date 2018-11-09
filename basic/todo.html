@@ -156,7 +156,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">待辦事項</span>
             </div>
-            <input type="text" class="form-control" placeholder="準備要做的任務" v-model="newTodo"  @keyup.enter="addTodo">
+            <input type="text" class="form-control" placeholder="準備要做的任務" v-model="newTodo" @keyup.enter="addTodo">
             <div class="input-group-append">
               <button class="btn btn-primary" type="button" @click="addTodo">新增</button>
             </div>
@@ -165,22 +165,23 @@
             <div class="card-header">
               <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#">全部</a>
+                  <a class="nav-link" :class="{'active': visibility =='all' }" @click.prevent="visibility ='all'" href="#">全部</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link " href="#">進行中</a>
+                  <a class="nav-link " :class="{'active': visibility =='active' }" @click.prevent="visibility ='active'" href="#">進行中</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">已完成</a>
+                  <a class="nav-link" :class="{'active': visibility =='completed' }" @click.prevent="visibility ='completed'"
+                    href="#">已完成</a>
                 </li>
               </ul>
             </div>
             <ul class="list-group list-group-flush text-left">
-              <li class="list-group-item" v-for="(item , index) in todos">
+              <li class="list-group-item" v-for="(item , index) in filteredTodos">
                 <div class="d-flex">
                   <div class="form-check">
                     <input type="checkbox" class="form-check-input" v-model="item.completed" :id="item.id">
-                    <label class="form-check-label" :for="item.id">
+                    <label class="form-check-label" :class="{'completed': item.completed}" :for="item.id">
                       {{ item.title }}
                     </label>
                   </div>
@@ -218,19 +219,20 @@
             el: '#app',
             data: {
               newTodo: '',
-              todos: [
-                {
-                  id: '001',
-                  title: 'Hello',
-                  completed: false
-                }
-              ]
+              todos: [{
+                id: '001',
+                title: 'Hello',
+                completed: false
+              }],
+              visibility: 'all'
             },
             methods: {
               addTodo: function () {
                 let value = this.newTodo.trim();
                 let timesTamp = Math.floor(Date.now());
-                if(!value){return;}
+                if (!value) {
+                  return;
+                }
                 this.todos.push({
                   id: timesTamp,
                   title: value,
@@ -240,10 +242,35 @@
 
                 this.newTodo = '';
               },
-              removeTodo: function(index){
-                this.todos.splice(index,1)
+              removeTodo: function (index) {
+                this.todos.splice(index, 1)
+              }
+            },
+            computed: {
+              filteredTodos: function () {
+                if (this.visibility == 'all') {
+                  return this.todos;
+                } else if (this.visibility == 'active') {
+                  let activeTodos = [];
+                  this.todos.forEach(function (item) {
+                    if (!item.completed) {
+                      activeTodos.push(item);
+                    }
+                  })
+                  return activeTodos;
+                } else if (this.visibility == 'completed') {
+                  let completedTodos = [];
+                  this.todos.forEach(function (item) {
+                    if (item.completed) {
+                      completedTodos.push(item);
+                    }
+                  })
+                  return completedTodos;
+                }
+                return [];
               }
             }
+
           });
         </script>
 
